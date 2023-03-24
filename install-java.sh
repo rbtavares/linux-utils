@@ -15,8 +15,12 @@ apt-get update -y
 
 # Install Java Versions
 for v in ${JAVA_VERSIONS[@]}; do
-  echo -e "\e[96mInstalling Java $v\e[0m"
-  apt-get install openjdk-$v-jre -y
+  if [[ $(dpkg -l | grep openjdk-$v-jre:) == "" ]]; then
+      echo -e "\e[96mInstalling Java $v\e[0m"
+      apt-get install openjdk-$v-jre -y
+  else
+      echo -e "\e[93mSkipping installation for Java $v: Already installed.\e[0m"
+  fi
 done
 
 # Create Hard Links
